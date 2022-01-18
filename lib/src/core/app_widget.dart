@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notifier/src/home/home_page.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -10,6 +11,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      home: const HomePage(),
       debugShowCheckedModeBanner: false,
     );
   }
