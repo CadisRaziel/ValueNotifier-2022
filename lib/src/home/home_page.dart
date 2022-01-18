@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notifier/src/home/home_controller.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -8,11 +9,27 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
+  //!Implementando a regra de negocio separada no controller
+  final controller = HomeController();
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
+  int get _counter => controller.counter;
+
+  //como colocamos o ChangeNotifier não precisamos dessa função
+  // void _incrementCounter() {
+  //   setState(() {
+  //     controller.increment();
+  //   });
+  // }
+
+  @override
+  void initState() {
+    super.initState();
+    //registrando uma função para ser chamada toda vez que o homeController quiser
+    //Repare que nao colocamos o setState la no homeController porque la não tem como
+    //Então assinamos ele aqui no initState para ficar async e ter um setState do homeController
+    //Podemos ter mais de 1 assinatura (2 - 3 - 4 -5 setState), com isso podemos controlar mais de 1 widget para alterar estado
+    controller.addListener(() {
+      setState(() {});
     });
   }
 
@@ -37,7 +54,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: controller.increment,
         tooltip: 'Incrementar',
         child: const Icon(Icons.add),
       ),
@@ -48,5 +65,5 @@ class _HomePageState extends State<HomePage> {
 /**
  * Anotaçoes:
  * Listenable -> Passar uma função como parametro pra uma variavel (exemplo a funcao _incrementCounter para o onPressed)
- * 
+ * ValueNotifier -> separar a função(regra de negocio) da parte visual (REATIVIDADE)
  */
